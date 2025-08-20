@@ -4,102 +4,60 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SPA設計自動化表單系統</title>
-    <meta name="description" content="專業AI指令生成器，一鍵產出8種SPA設計背景圖，適用於Gemini AI">
-    <meta name="keywords" content="SPA設計,AI生成,Gemini,美容設計,自動化表單">
-    
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Microsoft JhengHei', sans-serif;
-            line-height: 1.6;
-            color: #333;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
         }
         
         .container {
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-        
-        .header {
-            text-align: center;
-            color: white;
-            margin-bottom: 30px;
-        }
-        
-        .header h1 {
-            font-size: 2.5rem;
-            margin-bottom: 10px;
-            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
-        }
-        
-        .header .subtitle {
-            font-size: 1.1rem;
-            opacity: 0.9;
-            margin-bottom: 20px;
-        }
-        
-        .header .version {
-            background: rgba(255,255,255,0.2);
-            display: inline-block;
-            padding: 8px 20px;
-            border-radius: 20px;
-            font-size: 0.9rem;
-            backdrop-filter: blur(10px);
-        }
-        
-        .form-container {
             background: white;
             border-radius: 20px;
-            padding: 40px;
+            padding: 30px;
             box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        }
+        
+        h1 {
+            color: #2d3748;
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 28px;
+        }
+        
+        .subtitle {
+            color: #718096;
+            text-align: center;
+            font-size: 16px;
             margin-bottom: 30px;
         }
         
         .form-section {
-            margin-bottom: 30px;
-            padding: 25px;
-            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
-            border-radius: 15px;
-            border-left: 5px solid #4a90e2;
+            margin-bottom: 25px;
+            padding: 20px;
+            background: #f8fafc;
+            border-radius: 12px;
+            border-left: 4px solid #4a90e2;
         }
         
         .form-section h3 {
             color: #4a90e2;
-            margin-bottom: 20px;
-            font-size: 1.3rem;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .form-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
+            margin-bottom: 15px;
+            font-size: 18px;
         }
         
         .form-group {
-            margin-bottom: 20px;
-        }
-        
-        .form-group.full-width {
-            grid-column: 1 / -1;
+            margin-bottom: 15px;
         }
         
         label {
             display: block;
-            margin-bottom: 8px;
+            margin-bottom: 5px;
             color: #4a5568;
-            font-weight: 600;
-            font-size: 14px;
+            font-weight: 500;
         }
         
         .required {
@@ -108,241 +66,147 @@
         
         input, select, textarea {
             width: 100%;
-            padding: 15px;
+            padding: 12px;
             border: 2px solid #e2e8f0;
-            border-radius: 10px;
+            border-radius: 8px;
             font-size: 14px;
-            transition: all 0.3s ease;
-            background: white;
-            font-family: inherit;
+            transition: border-color 0.3s;
+            box-sizing: border-box;
         }
         
         input:focus, select:focus, textarea:focus {
             outline: none;
             border-color: #4a90e2;
-            box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1);
-            transform: translateY(-1px);
         }
         
         .btn-group {
             display: flex;
             gap: 15px;
-            margin: 30px 0;
-            flex-wrap: wrap;
+            margin: 20px 0;
         }
         
-        .btn {
+        .auto-fill-btn {
+            background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+            color: white;
             border: none;
-            padding: 15px 30px;
+            padding: 12px 25px;
             border-radius: 25px;
             cursor: pointer;
             font-size: 14px;
             font-weight: 600;
-            transition: all 0.3s ease;
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
             flex: 1;
-            min-width: 150px;
+            transition: transform 0.3s;
         }
         
-        .btn-primary {
-            background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
-            color: white;
+        .auto-fill-btn:hover {
+            transform: translateY(-2px);
         }
         
-        .btn-secondary {
+        .clear-btn {
             background: linear-gradient(135deg, #f56565 0%, #e53e3e 100%);
             color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            flex: 1;
+            transition: transform 0.3s;
         }
         
-        .btn-generate {
+        .clear-btn:hover {
+            transform: translateY(-2px);
+        }
+        
+        .generate-btn {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
-            padding: 20px 40px;
+            border: none;
+            padding: 18px 35px;
             border-radius: 50px;
-            font-size: 18px;
-            font-weight: 700;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
             width: 100%;
-            margin: 30px 0;
-            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+            margin: 25px 0;
+            transition: transform 0.3s;
         }
         
-        .btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        .generate-btn:hover {
+            transform: translateY(-2px);
         }
         
         .output-section {
-            background: white;
-            border-radius: 20px;
-            padding: 40px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
             margin-top: 30px;
-            display: none;
-        }
-        
-        .output-section h3 {
-            color: #2d3748;
-            margin-bottom: 25px;
-            font-size: 1.5rem;
-        }
-        
-        .stats-bar {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 20px;
-            background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
             padding: 25px;
+            background: #f7fafc;
             border-radius: 15px;
-            margin-bottom: 30px;
-            box-shadow: inset 0 2px 10px rgba(0,0,0,0.05);
-        }
-        
-        .stat-item {
-            text-align: center;
-        }
-        
-        .stat-number {
-            font-size: 2rem;
-            font-weight: bold;
-            color: #4a90e2;
-            margin-bottom: 5px;
-        }
-        
-        .stat-label {
-            font-size: 0.9rem;
-            color: #718096;
+            border: 2px solid #e2e8f0;
+            display: none;
         }
         
         .copy-all-btn {
             background: linear-gradient(135deg, #e53e3e 0%, #c53030 100%);
             color: white;
             border: none;
-            padding: 20px 40px;
-            border-radius: 15px;
+            padding: 15px 30px;
+            border-radius: 12px;
             cursor: pointer;
-            font-size: 18px;
+            font-size: 16px;
             font-weight: bold;
             width: 100%;
-            margin-bottom: 30px;
-            transition: all 0.3s ease;
-            box-shadow: 0 8px 25px rgba(229, 62, 62, 0.4);
+            margin-bottom: 20px;
+            transition: transform 0.3s;
         }
         
         .copy-all-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 12px 35px rgba(229, 62, 62, 0.6);
+            transform: translateY(-2px);
         }
         
         .all-prompts-display {
             background: #1a202c;
             color: #e2e8f0;
-            padding: 30px;
-            border-radius: 15px;
-            font-family: 'Monaco', 'Menlo', 'Consolas', monospace;
+            padding: 20px;
+            border-radius: 10px;
+            font-family: 'Monaco', 'Menlo', monospace;
             font-size: 13px;
-            line-height: 1.6;
+            line-height: 1.5;
             white-space: pre-wrap;
-            margin: 25px 0;
-            max-height: 400px;
+            margin: 15px 0;
+            max-height: 300px;
             overflow-y: auto;
-            border: 3px solid #4a90e2;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            border: 2px solid #4a90e2;
         }
         
-        .prompt-item {
-            background: #f8fafc;
-            border: 2px solid #e2e8f0;
-            border-radius: 12px;
-            margin: 20px 0;
-            overflow: hidden;
-            transition: all 0.3s ease;
-        }
-        
-        .prompt-item:hover {
-            border-color: #4a90e2;
-            box-shadow: 0 5px 15px rgba(74, 144, 226, 0.1);
-        }
-        
-        .prompt-header {
-            background: linear-gradient(135deg, #4a90e2 0%, #357abd 100%);
-            color: white;
-            padding: 15px 25px;
-            font-weight: 600;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
-        .prompt-content {
-            padding: 25px;
+        .prompt-output {
             background: #2d3748;
             color: #e2e8f0;
-            font-family: 'Monaco', 'Menlo', 'Consolas', monospace;
+            padding: 20px;
+            border-radius: 8px;
+            font-family: 'Monaco', 'Menlo', monospace;
             font-size: 14px;
-            line-height: 1.6;
+            line-height: 1.5;
             white-space: pre-wrap;
+            margin: 10px 0;
+            position: relative;
         }
         
         .copy-btn {
-            background: rgba(255,255,255,0.2);
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #4a90e2;
             color: white;
             border: none;
-            padding: 8px 15px;
-            border-radius: 8px;
+            padding: 8px 12px;
+            border-radius: 6px;
             cursor: pointer;
             font-size: 12px;
-            font-weight: 600;
-            transition: all 0.3s ease;
         }
         
         .copy-btn:hover {
-            background: rgba(255,255,255,0.3);
-            transform: scale(1.05);
-        }
-        
-        .footer {
-            text-align: center;
-            color: white;
-            margin-top: 50px;
-            padding: 30px;
-            background: rgba(0,0,0,0.1);
-            border-radius: 15px;
-            backdrop-filter: blur(10px);
-        }
-        
-        .footer h3 {
-            margin-bottom: 15px;
-            font-size: 1.3rem;
-        }
-        
-        .footer p {
-            opacity: 0.9;
-            margin-bottom: 20px;
-        }
-        
-        .footer-links {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            flex-wrap: wrap;
-        }
-        
-        .footer-links a {
-            color: white;
-            text-decoration: none;
-            padding: 10px 20px;
-            background: rgba(255,255,255,0.1);
-            border-radius: 20px;
-            transition: all 0.3s ease;
-        }
-        
-        .footer-links a:hover {
-            background: rgba(255,255,255,0.2);
-            transform: translateY(-2px);
+            background: #357abd;
         }
         
         .notification {
@@ -354,9 +218,8 @@
             color: white;
             font-weight: 600;
             z-index: 1000;
-            max-width: 400px;
+            max-width: 350px;
             animation: slideIn 0.3s ease;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
         }
         
         .notification.success {
@@ -365,10 +228,6 @@
         
         .notification.error {
             background: linear-gradient(135deg, #f56565, #e53e3e);
-        }
-        
-        .notification.info {
-            background: linear-gradient(135deg, #4a90e2, #357abd);
         }
         
         @keyframes slideIn {
@@ -383,166 +242,113 @@
         }
         
         @media (max-width: 768px) {
-            .container {
+            body {
                 padding: 10px;
             }
-            
-            .form-container, .output-section {
+            .container {
                 padding: 20px;
             }
-            
-            .header h1 {
-                font-size: 2rem;
+            h1 {
+                font-size: 24px;
             }
-            
-            .form-grid {
-                grid-template-columns: 1fr;
-            }
-            
             .btn-group {
                 flex-direction: column;
-            }
-            
-            .btn {
-                flex: none;
-                min-width: auto;
-            }
-            
-            .stats-bar {
-                grid-template-columns: repeat(2, 1fr);
-            }
-            
-            .footer-links {
-                flex-direction: column;
-                align-items: center;
             }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <header class="header">
-            <h1>🎨 SPA設計自動化表單系統</h1>
-            <div class="subtitle">專業 AI 指令生成器 | 一鍵產出 8 種設計背景圖</div>
-            <div class="version">v2.0 - 支援 Gemini AI</div>
-        </header>
+        <h1>🎨 SPA設計自動化表單系統</h1>
+        <div class="subtitle">專業 AI 指令生成器 | 一鍵產出 8 種設計背景</div>
         
-        <div class="form-container">
-            <div class="btn-group">
-                <button class="btn btn-primary" onclick="autoFillDemo()">
-                    ⚡ 快速填入範例資料
-                </button>
-                <button class="btn btn-secondary" onclick="clearForm()">
-                    🗑️ 清空表單
-                </button>
-            </div>
-            
-            <form id="spaForm">
-                <!-- 品牌資訊 -->
-                <div class="form-section">
-                    <h3>🏢 品牌基本資訊</h3>
-                    <div class="form-grid">
-                        <div class="form-group">
-                            <label for="brandName">品牌名稱 <span class="required">*</span></label>
-                            <input type="text" id="brandName" placeholder="例：凱沃微E美 SPA" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="location">店面位置</label>
-                            <input type="text" id="location" placeholder="例：桃園">
-                        </div>
-                        <div class="form-group full-width">
-                            <label for="serviceType">主要服務項目</label>
-                            <input type="text" id="serviceType" placeholder="例：逆時針光采雙享SPA">
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 優惠資訊 -->
-                <div class="form-section">
-                    <h3>💰 優惠價格資訊</h3>
-                    <div class="form-grid">
-                        <div class="form-group">
-                            <label for="originalPrice">原價</label>
-                            <input type="text" id="originalPrice" placeholder="例：10,000元">
-                        </div>
-                        <div class="form-group">
-                            <label for="discountPrice">優惠價 <span class="required">*</span></label>
-                            <input type="text" id="discountPrice" placeholder="例：599元" required>
-                        </div>
-                        <div class="form-group full-width">
-                            <label for="serviceDescription">服務描述</label>
-                            <textarea id="serviceDescription" rows="3" placeholder="例：逆齡立體導入×喚亮淨透&#10;AB課程可同次或分次進行&#10;深層滋潤 · 科技美容"></textarea>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 聯絡資訊 -->
-                <div class="form-section">
-                    <h3>📞 聯絡方式</h3>
-                    <div class="form-grid">
-                        <div class="form-group">
-                            <label for="lineId">LINE ID</label>
-                            <input type="text" id="lineId" placeholder="例：@256nrioe">
-                        </div>
-                        <div class="form-group">
-                            <label for="phone">聯絡電話</label>
-                            <input type="text" id="phone" placeholder="例：0989-747-697">
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 設計風格 -->
-                <div class="form-section">
-                    <h3>🎨 設計風格偏好</h3>
-                    <div class="form-grid">
-                        <div class="form-group">
-                            <label for="designStyle">整體風格</label>
-                            <select id="designStyle">
-                                <option value="japanese_minimal">日式簡約 - 禪意極簡</option>
-                                <option value="modern_luxury">現代奢華 - 高端時尚</option>
-                                <option value="artistic_creative">藝術創意 - 設計感強烈</option>
-                                <option value="professional_medical">專業醫美 - 科技質感</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="colorTheme">色調主題</label>
-                            <select id="colorTheme">
-                                <option value="pearl_blue">珍珠灰+藍色 (清雅)</option>
-                                <option value="warm_gold">溫暖金色+米白 (奢華)</option>
-                                <option value="cool_purple">冷調紫色+銀灰 (神秘)</option>
-                                <option value="fresh_green">清新綠色+自然 (活力)</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-
-                <button type="button" class="btn-generate" onclick="generatePrompts()">
-                    🚀 生成專業 AI 設計指令
-                </button>
-            </form>
+        <div class="btn-group">
+            <button class="auto-fill-btn" onclick="autoFillDemo()">
+                ⚡ 快速填入範例資料
+            </button>
+            <button class="clear-btn" onclick="clearForm()">
+                🗑️ 清空表單
+            </button>
         </div>
+        
+        <form id="spaForm">
+            <!-- 品牌資訊 -->
+            <div class="form-section">
+                <h3>🏢 品牌基本資訊</h3>
+                <div class="form-group">
+                    <label for="brandName">品牌名稱 <span class="required">*</span></label>
+                    <input type="text" id="brandName" placeholder="例：凱沃微E美 SPA" required>
+                </div>
+                <div class="form-group">
+                    <label for="location">店面位置</label>
+                    <input type="text" id="location" placeholder="例：桃園">
+                </div>
+                <div class="form-group">
+                    <label for="serviceType">主要服務項目</label>
+                    <input type="text" id="serviceType" placeholder="例：逆時針光采雙享SPA">
+                </div>
+            </div>
+
+            <!-- 優惠資訊 -->
+            <div class="form-section">
+                <h3>💰 優惠價格資訊</h3>
+                <div class="form-group">
+                    <label for="originalPrice">原價</label>
+                    <input type="text" id="originalPrice" placeholder="例：10,000元">
+                </div>
+                <div class="form-group">
+                    <label for="discountPrice">優惠價 <span class="required">*</span></label>
+                    <input type="text" id="discountPrice" placeholder="例：599元" required>
+                </div>
+                <div class="form-group">
+                    <label for="serviceDescription">服務描述</label>
+                    <textarea id="serviceDescription" rows="3" placeholder="例：逆齡立體導入×喚亮淨透"></textarea>
+                </div>
+            </div>
+
+            <!-- 聯絡資訊 -->
+            <div class="form-section">
+                <h3>📞 聯絡方式</h3>
+                <div class="form-group">
+                    <label for="lineId">LINE ID</label>
+                    <input type="text" id="lineId" placeholder="例：@256nrioe">
+                </div>
+                <div class="form-group">
+                    <label for="phone">聯絡電話</label>
+                    <input type="text" id="phone" placeholder="例：0989-747-697">
+                </div>
+            </div>
+
+            <!-- 設計風格 -->
+            <div class="form-section">
+                <h3>🎨 設計風格偏好</h3>
+                <div class="form-group">
+                    <label for="designStyle">整體風格</label>
+                    <select id="designStyle">
+                        <option value="japanese_minimal">日式簡約 - 禪意極簡</option>
+                        <option value="modern_luxury">現代奢華 - 高端時尚</option>
+                        <option value="artistic_creative">藝術創意 - 設計感強烈</option>
+                        <option value="professional_medical">專業醫美 - 科技質感</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="colorTheme">色調主題</label>
+                    <select id="colorTheme">
+                        <option value="pearl_blue">珍珠灰+藍色 (清雅)</option>
+                        <option value="warm_gold">溫暖金色+米白 (奢華)</option>
+                        <option value="cool_purple">冷調紫色+銀灰 (神秘)</option>
+                        <option value="fresh_green">清新綠色+自然 (活力)</option>
+                    </select>
+                </div>
+            </div>
+
+            <button type="button" class="generate-btn" onclick="generatePrompts()">
+                🚀 生成專業 AI 設計指令
+            </button>
+        </form>
 
         <div id="outputSection" class="output-section">
             <h3>📋 AI 設計指令已生成</h3>
-            
-            <div class="stats-bar">
-                <div class="stat-item">
-                    <div class="stat-number">8</div>
-                    <div class="stat-label">設計類型</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-number" id="totalChars">0</div>
-                    <div class="stat-label">總字數</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-number">Gemini</div>
-                    <div class="stat-label">AI 平台</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-number">FREE</div>
-                    <div class="stat-label">使用費用</div>
-                </div>
-            </div>
             
             <button class="copy-all-btn" onclick="copyAllPrompts()">
                 📋 一次複製全部指令到 Gemini
@@ -550,19 +356,9 @@
             
             <div class="all-prompts-display" id="allPromptsPreview"></div>
             
-            <h4 style="margin: 30px 0 20px 0; color: #4a5568;">📝 個別指令預覽：</h4>
+            <h4>📝 個別指令預覽：</h4>
             <div id="promptsContainer"></div>
         </div>
-        
-        <footer class="footer">
-            <h3>💾 使用說明</h3>
-            <p>1. 填寫表單資料 → 2. 生成AI指令 → 3. 複製到Gemini → 4. 生成圖片 → 5. 下載使用</p>
-            <div class="footer-links">
-                <a href="https://gemini.google.com" target="_blank">🔗 前往 Gemini AI</a>
-                <a href="#" onclick="saveAsHTML()">💾 下載離線版本</a>
-                <a href="#" onclick="showHelp()">❓ 使用說明</a>
-            </div>
-        </footer>
     </div>
 
     <script>
@@ -575,7 +371,7 @@
                 document.getElementById('serviceType').value = '逆時針光采雙享SPA';
                 document.getElementById('originalPrice').value = '10,000元';
                 document.getElementById('discountPrice').value = '599元';
-                document.getElementById('serviceDescription').value = '逆齡立體導入×喚亮淨透\nAB課程可同次或分次進行\n深層滋潤 · 科技美容';
+                document.getElementById('serviceDescription').value = '逆齡立體導入×喚亮淨透';
                 document.getElementById('lineId').value = '@256nrioe';
                 document.getElementById('phone').value = '0989-747-697';
                 document.getElementById('designStyle').value = 'japanese_minimal';
@@ -672,9 +468,6 @@
                 // 準備全部指令文字
                 allPromptsText = prompts.map((item, index) => `【${index + 1}】${item.title}\n${item.prompt}`).join('\n\n---\n\n');
 
-                // 更新統計
-                document.getElementById('totalChars').textContent = allPromptsText.length.toLocaleString();
-
                 // 顯示預覽
                 document.getElementById('allPromptsPreview').textContent = allPromptsText;
 
@@ -684,13 +477,12 @@
                 
                 prompts.forEach((item, index) => {
                     const promptDiv = document.createElement('div');
-                    promptDiv.className = 'prompt-item';
                     promptDiv.innerHTML = `
-                        <div class="prompt-header">
-                            <span>${item.title}</span>
+                        <h4>${item.title}</h4>
+                        <div class="prompt-output">
                             <button class="copy-btn" onclick="copyToClipboard('prompt${index}')">複製</button>
+                            <div id="prompt${index}">${item.prompt}</div>
                         </div>
-                        <div class="prompt-content" id="prompt${index}">${item.prompt}</div>
                     `;
                     promptsContainer.appendChild(promptDiv);
                 });
@@ -702,12 +494,62 @@
                 showNotification('✅ 成功生成 8 組專業 AI 設計指令！', 'success');
             } catch (error) {
                 showNotification('❌ 生成失敗：' + error.message, 'error');
+                console.error('Error:', error);
             }
         }
 
         function copyAllPrompts() {
-            if (!allPromptsText
-                }
+            if (!allPromptsText) {
+                showNotification('❌ 請先生成指令！', 'error');
+                return;
+            }
+            
+            navigator.clipboard.writeText(allPromptsText).then(() => {
+                showNotification('✅ 全部8組指令已複製！可以到Gemini貼上使用', 'success');
+            }).catch(err => {
+                // 備用方案
+                const textArea = document.createElement('textarea');
+                textArea.value = allPromptsText;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textArea);
+                showNotification('✅ 已複製到剪貼簿（備用方案）', 'success');
+            });
+        }
+
+        function copyToClipboard(elementId) {
+            const text = document.getElementById(elementId).textContent;
+            navigator.clipboard.writeText(text).then(() => {
+                showNotification('✅ 單個指令已複製！', 'success');
+            }).catch(err => {
+                // 備用方案
+                const textArea = document.createElement('textarea');
+                textArea.value = text;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textArea);
+                showNotification('✅ 已複製到剪貼簿', 'success');
+            });
+        }
+
+        function showNotification(message, type = 'success') {
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            notification.textContent = message;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.remove();
+            }, 3000);
+        }
+
+        // 頁面載入完成後測試
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('頁面載入完成，所有功能已準備就緒');
+        });
     </script>
 </body>
 </html>
