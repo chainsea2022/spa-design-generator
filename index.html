@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SPA設計自動化表單系統</title>
+    <meta name="description" content="專業AI指令生成器，一鍵產出8種SPA設計背景圖，適用於Gemini AI">
+    <meta name="keywords" content="SPA設計,AI生成,Gemini,美容設計,自動化表單">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Microsoft JhengHei', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+        
+        .header .subtitle {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            margin-bottom: 20px;
+        }
+        
+        .header .version {
+            background: rgba(255,255,255,0.2);
+            display: inline-block;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            backdrop-filter: blur(10px);
+        }
+        
+        .form-container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            margin-bottom: 30px;
+        }
+        
+        .form-section {
+            margin-bottom: 30px;
+            padding: 25px;
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            border-radius: 15px;
+            border-left: 5px solid #4a90e2;
+        }
+        
+        .form-section h3 {
+            color: #4a90e2;
+            margin-bottom: 20px;
+            font-size: 1.3rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group.full-width {
+            grid-column: 1 / -1;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #4a5568;
+            font-weight: 600;
+            font-size: 14px;
+        }
+        
+        .required {
+            color: #e53e3e;
+        }
+        
+        input, select, textarea {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            background: white;
+            font-family: inherit;
+        }
+        
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #4a90e2;
+            box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1);
+            transform: translateY(-1px);
+        }
+        
+        .btn-group {
+            display: flex;
+            gap: 15px;
+            margin: 30px 0;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            border: none;
+            padding: 15px 30px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            flex: 1;
+            min-width: 150px;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+            color: white;
+        }
+        
+        .btn-secondary {
+            background: linear-gradient(135deg, #f56565 0%, #e53e3e 100%);
+            color: white;
+        }
+        
+        .btn-generate {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px 40px;
+            border-radius: 50px;
+            font-size: 18px;
+            font-weight: 700;
+            width: 100%;
+            margin: 30px 0;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+        }
+        
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+        
+        .output-section {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            margin-top: 30px;
+            display: none;
+        }
+        
+        .output-section h3 {
+            color: #2d3748;
+            margin-bottom: 25px;
+            font-size: 1.5rem;
+        }
+        
+        .stats-bar {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 20px;
+            background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            box-shadow: inset 0 2px 10px rgba(0,0,0,0.05);
+        }
+        
+        .stat-item {
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #4a90e2;
+            margin-bottom: 5px;
+        }
+        
+        .stat-label {
+            font-size: 0.9rem;
+            color: #718096;
+        }
+        
+        .copy-all-btn {
+            background: linear-gradient(135deg, #e53e3e 0%, #c53030 100%);
+            color: white;
+            border: none;
+            padding: 20px 40px;
+            border-radius: 15px;
+            cursor: pointer;
+            font-size: 18px;
+            font-weight: bold;
+            width: 100%;
+            margin-bottom: 30px;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 25px rgba(229, 62, 62, 0.4);
+        }
+        
+        .copy-all-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 35px rgba(229, 62, 62, 0.6);
+        }
+        
+        .all-prompts-display {
+            background: #1a202c;
+            color: #e2e8f0;
+            padding: 30px;
+            border-radius: 15px;
+            font-family: 'Monaco', 'Menlo', 'Consolas', monospace;
+            font-size: 13px;
+            line-height: 1.6;
+            white-space: pre-wrap;
+            margin: 25px 0;
+            max-height: 400px;
+            overflow-y: auto;
+            border: 3px solid #4a90e2;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        
+        .prompt-item {
+            background: #f8fafc;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            margin: 20px 0;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .prompt-item:hover {
+            border-color: #4a90e2;
+            box-shadow: 0 5px 15px rgba(74, 144, 226, 0.1);
+        }
+        
+        .prompt-header {
+            background: linear-gradient(135deg, #4a90e2 0%, #357abd 100%);
+            color: white;
+            padding: 15px 25px;
+            font-weight: 600;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .prompt-content {
+            padding: 25px;
+            background: #2d3748;
+            color: #e2e8f0;
+            font-family: 'Monaco', 'Menlo', 'Consolas', monospace;
+            font-size: 14px;
+            line-height: 1.6;
+            white-space: pre-wrap;
+        }
+        
+        .copy-btn {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .copy-btn:hover {
+            background: rgba(255,255,255,0.3);
+            transform: scale(1.05);
+        }
+        
+        .footer {
+            text-align: center;
+            color: white;
+            margin-top: 50px;
+            padding: 30px;
+            background: rgba(0,0,0,0.1);
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+        }
+        
+        .footer h3 {
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+        
+        .footer p {
+            opacity: 0.9;
+            margin-bottom: 20px;
+        }
+        
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .footer-links a {
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 20px;
+            transition: all 0.3s ease;
+        }
+        
+        .footer-links a:hover {
+            background: rgba(255,255,255,0.2);
+            transform: translateY(-2px);
+        }
+        
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 25px;
+            border-radius: 10px;
+            color: white;
+            font-weight: 600;
+            z-index: 1000;
+            max-width: 400px;
+            animation: slideIn 0.3s ease;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        
+        .notification.success {
+            background: linear-gradient(135deg, #48bb78, #38a169);
+        }
+        
+        .notification.error {
+            background: linear-gradient(135deg, #f56565, #e53e3e);
+        }
+        
+        .notification.info {
+            background: linear-gradient(135deg, #4a90e2, #357abd);
+        }
+        
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            
+            .form-container, .output-section {
+                padding: 20px;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .btn-group {
+                flex-direction: column;
+            }
+            
+            .btn {
+                flex: none;
+                min-width: auto;
+            }
+            
+            .stats-bar {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .footer-links {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>🎨 SPA設計自動化表單系統</h1>
+            <div class="subtitle">專業 AI 指令生成器 | 一鍵產出 8 種設計背景圖</div>
+            <div class="version">v2.0 - 支援 Gemini AI</div>
+        </header>
+        
+        <div class="form-container">
+            <div class="btn-group">
+                <button class="btn btn-primary" onclick="autoFillDemo()">
+                    ⚡ 快速填入範例資料
+                </button>
+                <button class="btn btn-secondary" onclick="clearForm()">
+                    🗑️ 清空表單
+                </button>
+            </div>
+            
+            <form id="spaForm">
+                <!-- 品牌資訊 -->
+                <div class="form-section">
+                    <h3>🏢 品牌基本資訊</h3>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="brandName">品牌名稱 <span class="required">*</span></label>
+                            <input type="text" id="brandName" placeholder="例：凱沃微E美 SPA" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="location">店面位置</label>
+                            <input type="text" id="location" placeholder="例：桃園">
+                        </div>
+                        <div class="form-group full-width">
+                            <label for="serviceType">主要服務項目</label>
+                            <input type="text" id="serviceType" placeholder="例：逆時針光采雙享SPA">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 優惠資訊 -->
+                <div class="form-section">
+                    <h3>💰 優惠價格資訊</h3>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="originalPrice">原價</label>
+                            <input type="text" id="originalPrice" placeholder="例：10,000元">
+                        </div>
+                        <div class="form-group">
+                            <label for="discountPrice">優惠價 <span class="required">*</span></label>
+                            <input type="text" id="discountPrice" placeholder="例：599元" required>
+                        </div>
+                        <div class="form-group full-width">
+                            <label for="serviceDescription">服務描述</label>
+                            <textarea id="serviceDescription" rows="3" placeholder="例：逆齡立體導入×喚亮淨透&#10;AB課程可同次或分次進行&#10;深層滋潤 · 科技美容"></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 聯絡資訊 -->
+                <div class="form-section">
+                    <h3>📞 聯絡方式</h3>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="lineId">LINE ID</label>
+                            <input type="text" id="lineId" placeholder="例：@256nrioe">
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">聯絡電話</label>
+                            <input type="text" id="phone" placeholder="例：0989-747-697">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 設計風格 -->
+                <div class="form-section">
+                    <h3>🎨 設計風格偏好</h3>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="designStyle">整體風格</label>
+                            <select id="designStyle">
+                                <option value="japanese_minimal">日式簡約 - 禪意極簡</option>
+                                <option value="modern_luxury">現代奢華 - 高端時尚</option>
+                                <option value="artistic_creative">藝術創意 - 設計感強烈</option>
+                                <option value="professional_medical">專業醫美 - 科技質感</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="colorTheme">色調主題</label>
+                            <select id="colorTheme">
+                                <option value="pearl_blue">珍珠灰+藍色 (清雅)</option>
+                                <option value="warm_gold">溫暖金色+米白 (奢華)</option>
+                                <option value="cool_purple">冷調紫色+銀灰 (神秘)</option>
+                                <option value="fresh_green">清新綠色+自然 (活力)</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <button type="button" class="btn-generate" onclick="generatePrompts()">
+                    🚀 生成專業 AI 設計指令
+                </button>
+            </form>
+        </div>
+
+        <div id="outputSection" class="output-section">
+            <h3>📋 AI 設計指令已生成</h3>
+            
+            <div class="stats-bar">
+                <div class="stat-item">
+                    <div class="stat-number">8</div>
+                    <div class="stat-label">設計類型</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" id="totalChars">0</div>
+                    <div class="stat-label">總字數</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">Gemini</div>
+                    <div class="stat-label">AI 平台</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">FREE</div>
+                    <div class="stat-label">使用費用</div>
+                </div>
+            </div>
+            
+            <button class="copy-all-btn" onclick="copyAllPrompts()">
+                📋 一次複製全部指令到 Gemini
+            </button>
+            
+            <div class="all-prompts-display" id="allPromptsPreview"></div>
+            
+            <h4 style="margin: 30px 0 20px 0; color: #4a5568;">📝 個別指令預覽：</h4>
+            <div id="promptsContainer"></div>
+        </div>
+        
+        <footer class="footer">
+            <h3>💾 使用說明</h3>
+            <p>1. 填寫表單資料 → 2. 生成AI指令 → 3. 複製到Gemini → 4. 生成圖片 → 5. 下載使用</p>
+            <div class="footer-links">
+                <a href="https://gemini.google.com" target="_blank">🔗 前往 Gemini AI</a>
+                <a href="#" onclick="saveAsHTML()">💾 下載離線版本</a>
+                <a href="#" onclick="showHelp()">❓ 使用說明</a>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        let allPromptsText = "";
+
+        function autoFillDemo() {
+            try {
+                document.getElementById('brandName').value = '凱沃微E美 SPA';
+                document.getElementById('location').value = '桃園';
+                document.getElementById('serviceType').value = '逆時針光采雙享SPA';
+                document.getElementById('originalPrice').value = '10,000元';
+                document.getElementById('discountPrice').value = '599元';
+                document.getElementById('serviceDescription').value = '逆齡立體導入×喚亮淨透\nAB課程可同次或分次進行\n深層滋潤 · 科技美容';
+                document.getElementById('lineId').value = '@256nrioe';
+                document.getElementById('phone').value = '0989-747-697';
+                document.getElementById('designStyle').value = 'japanese_minimal';
+                document.getElementById('colorTheme').value = 'pearl_blue';
+                
+                showNotification('✅ 範例資料已成功填入！', 'success');
+            } catch (error) {
+                showNotification('❌ 填入失敗：' + error.message, 'error');
+            }
+        }
+
+        function clearForm() {
+            if (confirm('確定要清空所有表單資料嗎？')) {
+                document.getElementById('spaForm').reset();
+                document.getElementById('outputSection').style.display = 'none';
+                showNotification('🗑️ 表單已清空', 'success');
+            }
+        }
+
+        function generatePrompts() {
+            try {
+                // 取得表單資料
+                const brandName = document.getElementById('brandName').value;
+                const location = document.getElementById('location').value;
+                const serviceType = document.getElementById('serviceType').value;
+                const originalPrice = document.getElementById('originalPrice').value;
+                const discountPrice = document.getElementById('discountPrice').value;
+                const serviceDescription = document.getElementById('serviceDescription').value;
+                const lineId = document.getElementById('lineId').value;
+                const phone = document.getElementById('phone').value;
+                const designStyle = document.getElementById('designStyle').value;
+                const colorTheme = document.getElementById('colorTheme').value;
+
+                // 驗證必填欄位
+                if (!brandName || !discountPrice) {
+                    showNotification('❌ 請填寫必填欄位：品牌名稱和優惠價', 'error');
+                    return;
+                }
+
+                // 風格映射
+                const styleMap = {
+                    'japanese_minimal': '日式簡約美學，禪意設計，極簡構圖',
+                    'modern_luxury': '現代奢華風格，高端質感，時尚設計',
+                    'artistic_creative': '藝術創意風格，抽象元素，設計感強烈',
+                    'professional_medical': '專業醫美風格，科技感，醫療級質感'
+                };
+
+                const colorMap = {
+                    'pearl_blue': '珍珠灰和柔和藍色調',
+                    'warm_gold': '溫暖金色和米白色調',
+                    'cool_purple': '冷調紫色和銀灰色',
+                    'fresh_green': '清新綠色和自然色調'
+                };
+
+                const baseStyle = styleMap[designStyle];
+                const baseColor = colorMap[colorTheme];
+
+                // 生成8組指令
+                const prompts = [
+                    {
+                        title: '1. 主Banner背景',
+                        prompt: `生成高端SPA品牌主Banner背景圖：\n優雅亞洲女性接受面部護理，側臉特寫，閉眼安詳，${baseColor}，${baseStyle}，戲劇性柔和打光，現代編輯攝影風格，左側大量留白供文字使用，右側人物圖像，無任何文字，專業8K品質，高端美容品牌質感`
+                    },
+                    {
+                        title: '2. 流程圖實際展示',
+                        prompt: `拍攝真實SPA護理流程照片：\n自然光線下的美容院實景，專業美容師正在進行護理步驟，真實的工作環境，亞洲女性客戶，自然放鬆的表情，手機攝影風格，生活化場景，真實的色彩和光線，無文字，適合社群媒體分享的真實感`
+                    },
+                    {
+                        title: '3. 超聲波設備實操',
+                        prompt: `拍攝真實超聲波護理場景：\n美容師正在使用超聲波設備，真實的操作畫面，自然室內燈光，亞洲女性客戶躺在護理床上，放鬆自然的表情，手機相機拍攝質感，真實生活場景，無修飾的自然色彩，無文字，真實記錄風格`
+                    },
+                    {
+                        title: '4. LED光療實際操作',
+                        prompt: `拍攝真實LED光療過程：\n客戶正在接受LED光療，真實的光療設備和效果，自然的室內環境，放鬆的治療氛圍，手機攝影風格，生活化的記錄感，真實光線和色彩，無文字，社群分享風格的真實照片`
+                    },
+                    {
+                        title: '5. 專業手技實操',
+                        prompt: `拍攝真實按摩手技場景：\n美容師正在進行面部按摩，真實的手法操作，自然的工作環境，客戶舒適放鬆的狀態，生活化攝影風格，真實的膚質和表情，自然光線，無文字，真實記錄風格的照片`
+                    },
+                    {
+                        title: '6. 客戶真實體驗',
+                        prompt: `拍攝真實客戶體驗照片：\n護理後滿意的客戶表情，自然真實的笑容，美容院真實環境背景，生活化人像攝影，手機拍照質感，真實的膚質和光線，無文字，適合客戶見證的真實感照片`
+                    },
+                    {
+                        title: '7. SPA環境實景',
+                        prompt: `拍攝真實美容院環境：\n實際的護理房間內部，真實的設備和裝潢，自然室內光線，生活化的空間攝影，手機相機拍攝感，真實的色彩和材質，無文字，適合展示環境的真實照片`
+                    },
+                    {
+                        title: '8. 面膜護理實操',
+                        prompt: `拍攝真實面膜護理過程：\n美容師正在幫客戶敷面膜，真實的操作場景，自然的工作環境，生活化的記錄風格，手機攝影質感，真實的光線和色彩，客戶放鬆的自然狀態，無文字，真實記錄風格`
+                    }
+                ];
+
+                // 準備全部指令文字
+                allPromptsText = prompts.map((item, index) => `【${index + 1}】${item.title}\n${item.prompt}`).join('\n\n---\n\n');
+
+                // 更新統計
+                document.getElementById('totalChars').textContent = allPromptsText.length.toLocaleString();
+
+                // 顯示預覽
+                document.getElementById('allPromptsPreview').textContent = allPromptsText;
+
+                // 顯示個別指令
+                const promptsContainer = document.getElementById('promptsContainer');
+                promptsContainer.innerHTML = '';
+                
+                prompts.forEach((item, index) => {
+                    const promptDiv = document.createElement('div');
+                    promptDiv.className = 'prompt-item';
+                    promptDiv.innerHTML = `
+                        <div class="prompt-header">
+                            <span>${item.title}</span>
+                            <button class="copy-btn" onclick="copyToClipboard('prompt${index}')">複製</button>
+                        </div>
+                        <div class="prompt-content" id="prompt${index}">${item.prompt}</div>
+                    `;
+                    promptsContainer.appendChild(promptDiv);
+                });
+                
+                // 顯示結果區域
+                document.getElementById('outputSection').style.display = 'block';
+                document.getElementById('outputSection').scrollIntoView({ behavior: 'smooth' });
+                
+                showNotification('✅ 成功生成 8 組專業 AI 設計指令！', 'success');
+            } catch (error) {
+                showNotification('❌ 生成失敗：' + error.message, 'error');
+            }
+        }
+
+        function copyAllPrompts() {
+            if (!allPromptsText
+                }
+    </script>
+</body>
+</html>
