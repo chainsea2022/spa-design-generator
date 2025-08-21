@@ -7,7 +7,7 @@
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            max-width: 800px;
+            max-width: 900px;
             margin: 0 auto;
             padding: 20px;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -128,6 +128,12 @@
             transform: translateY(-2px);
         }
         
+        .generate-btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
         .output-section {
             margin-top: 30px;
             padding: 25px;
@@ -202,19 +208,67 @@
             background: #f56565;
         }
         
-        .size-notice {
-            background: #fef5e7;
-            border: 2px solid #f6ad55;
-            border-radius: 10px;
-            padding: 15px;
+        .design-type-selector {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
             margin-bottom: 20px;
+        }
+        
+        .design-type-card {
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 15px;
+            cursor: pointer;
+            transition: all 0.3s;
             text-align: center;
         }
         
-        .size-notice p {
+        .design-type-card:hover {
+            border-color: #4a90e2;
+            background: #f8fafc;
+        }
+        
+        .design-type-card.selected {
+            border-color: #4a90e2;
+            background: #ebf8ff;
+        }
+        
+        .design-type-card h4 {
+            margin: 0 0 8px 0;
+            color: #2d3748;
+        }
+        
+        .design-type-card p {
             margin: 0;
-            color: #744210;
-            font-weight: 600;
+            font-size: 12px;
+            color: #718096;
+        }
+        
+        .count-selector {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .count-btn {
+            background: #4a90e2;
+            color: white;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        
+        .count-display {
+            font-size: 24px;
+            font-weight: bold;
+            color: #2d3748;
+            min-width: 60px;
+            text-align: center;
         }
         
         .expandable-sections {
@@ -254,92 +308,10 @@
             background: white;
         }
         
-        .step-container {
-            margin: 20px 0;
-        }
-        
-        .step {
-            display: flex;
-            align-items: flex-start;
-            margin-bottom: 20px;
-            padding: 20px;
-            background: #f8fafc;
-            border-radius: 12px;
-            border-left: 4px solid #4a90e2;
-        }
-        
-        .step-number {
-            background: linear-gradient(135deg, #4a90e2 0%, #357abd 100%);
-            color: white;
-            width: 35px;
-            height: 35px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            font-size: 16px;
-            margin-right: 15px;
-            flex-shrink: 0;
-        }
-        
-        .step-content h4 {
-            color: #2d3748;
-            margin-bottom: 8px;
-            font-size: 16px;
-        }
-        
-        .step-content p {
-            color: #4a5568;
-            line-height: 1.6;
-            margin: 0;
-        }
-        
-        .tips-grid {
+        .price-group {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
-            margin-top: 20px;
-        }
-        
-        .tip-card {
-            background: #f8fafc;
-            padding: 20px;
-            border-radius: 12px;
-            border-left: 4px solid #48bb78;
-        }
-        
-        .tip-card h4 {
-            color: #2d3748;
-            margin-bottom: 15px;
-            font-size: 16px;
-        }
-        
-        .tip-card ul {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-        
-        .tip-card li {
-            margin-bottom: 10px;
-            padding-left: 20px;
-            position: relative;
-            color: #4a5568;
-            line-height: 1.5;
-            font-size: 14px;
-        }
-        
-        .tip-card li::before {
-            content: "▸";
-            position: absolute;
-            left: 0;
-            color: #48bb78;
-            font-weight: bold;
-        }
-        
-        .tip-card strong {
-            color: #2d3748;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
         }
         
         .gemini-quick-access {
@@ -371,43 +343,6 @@
             box-shadow: 0 15px 40px rgba(66, 133, 244, 0.4);
         }
         
-        .gemini-icon {
-            font-size: 28px;
-            margin-right: 20px;
-        }
-        
-        .gemini-text {
-            flex: 1;
-            text-align: left;
-        }
-        
-        .gemini-title {
-            font-size: 18px;
-            font-weight: bold;
-            margin-bottom: 4px;
-        }
-        
-        .gemini-subtitle {
-            font-size: 14px;
-            opacity: 0.9;
-        }
-        
-        .gemini-arrow {
-            font-size: 24px;
-            margin-left: 20px;
-            transition: transform 0.3s ease;
-        }
-        
-        .gemini-main-btn:hover .gemini-arrow {
-            transform: translateX(5px);
-        }
-        
-        .price-group {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-        }
-        
         @media (max-width: 768px) {
             body {
                 padding: 10px;
@@ -419,6 +354,9 @@
                 flex-direction: column;
             }
             .price-group {
+                grid-template-columns: 1fr;
+            }
+            .design-type-selector {
                 grid-template-columns: 1fr;
             }
         }
@@ -439,31 +377,16 @@
         </div>
         
         <form id="spaForm">
-            <!-- 品牌基本資訊 -->
+            <!-- 課程內容資訊 -->
             <div class="form-section">
-                <h3>🏢 品牌基本資訊</h3>
-                <div class="form-group">
-                    <label for="shopName">店家名稱 <span class="required">*</span></label>
-                    <input type="text" id="shopName" placeholder="例：凱沃微E美 SPA" required>
-                </div>
-                <div class="form-group">
-                    <label for="courseDuration">課程分鐘數</label>
-                    <input type="text" id="courseDuration" placeholder="例：90分鐘">
-                </div>
+                <h3>📝 課程內容資訊</h3>
                 <div class="form-group">
                     <label for="courseTitle">標題 <span class="required">*</span></label>
-                    <input type="text" id="courseTitle" placeholder="例：逆時針光采雙享SPA・逆齡立體導入×喚亮淨透" required>
-                </div>
-                <div class="form-group">
-                    <label>價格資訊</label>
-                    <div class="price-group">
-                        <input type="text" id="originalPrice" placeholder="原價：例：10,000元">
-                        <input type="text" id="discountPrice" placeholder="優惠價：例：599元">
-                    </div>
+                    <input type="text" id="courseTitle" placeholder="例：逆時重光採雙享SPA・逆齡立體導入×嫩亮淨透" required>
                 </div>
                 <div class="form-group">
                     <label for="courseContent">課程內容</label>
-                    <textarea id="courseContent" rows="4" placeholder="例：&#10;【A課程：立體輪廓保濕亮顏】&#10;✓ 雙層深層溫和卸妝清潔&#10;✓ 水潤超聲波導入保養"></textarea>
+                    <textarea id="courseContent" rows="4" placeholder="例：&#10;【A課程：立體輪廓保濕亮顏】&#10;✓ 雙層深層溫和吸附清潔&#10;✓ 水潤超音波導入保養"></textarea>
                 </div>
             </div>
 
@@ -476,32 +399,50 @@
                 </div>
                 <div class="form-group">
                     <label for="colorTheme">色調主題</label>
-                    <input type="text" id="colorTheme" placeholder="例：珍珠灰配藍色、溫暖金色等">
+                    <input type="text" id="colorTheme" placeholder="例：珍珠灰配柔和藍色、溫暖金色等">
+                </div>
+            </div>
+
+            <!-- 設計類型選擇 -->
+            <div class="form-section">
+                <h3>🖼️ 設計類型選擇</h3>
+                <div class="design-type-selector">
+                    <div class="design-type-card selected" data-type="mixed" onclick="selectDesignType('mixed')">
+                        <h4>🎨 混合設計</h4>
+                        <p>Banner + 流程圖 + 其他設計元素</p>
+                    </div>
+                    <div class="design-type-card" data-type="custom" onclick="selectDesignType('custom')">
+                        <h4>⚙️ 自訂設計</h4>
+                        <p>完全客製化設計需求</p>
+                    </div>
                 </div>
             </div>
 
             <!-- 設計規格設定 -->
             <div class="form-section">
-                <h3>📐 設計規格設定</h3>
-                <div class="size-notice">
-                    <p><strong>設計尺寸規範：</strong>圖面寬度固定800 / 長度不超過1600</p>
-                </div>
+                <h3>📏 設計規格設定</h3>
                 <div class="form-group">
                     <label for="designSize">設計尺寸</label>
                     <select id="designSize">
                         <option value="800x800">800x800 (正方形)</option>
-                        <option value="1080x1080">1080x1080 (IG正方形)</option>
+                        <option value="1080x1080">1080x1080 (正方形)</option>
                         <option value="800x419">800x419 (橫式)</option>
-                        <option value="1200x628">1200x628 (FB橫式)</option>
+                        <option value="1200x628">1200x628 (橫式)</option>
+                        <option value="1080x1920">1080x1920 (限時動態)</option>
                     </select>
                 </div>
                 <div class="form-group">
-                    <label for="designCount">設計張數</label>
-                    <input type="number" id="designCount" placeholder="例：8" min="1" max="20" value="8">
+                    <label>設計張數</label>
+                    <div class="count-selector">
+                        <button type="button" class="count-btn" onclick="changeCount(-1)">−</button>
+                        <div class="count-display" id="designCountDisplay">8</div>
+                        <button type="button" class="count-btn" onclick="changeCount(1)">+</button>
+                    </div>
+                    <input type="hidden" id="designCount" value="8">
                 </div>
             </div>
 
-            <button type="button" class="generate-btn" onclick="generatePrompts()">
+            <button type="button" class="generate-btn" onclick="generatePrompts()" id="generateBtn">
                 🚀 生成專業 AI 設計指令
             </button>
         </form>
@@ -529,99 +470,17 @@
                     📖 使用說明 <span id="usage-arrow">▼</span>
                 </button>
                 <div id="usage-guide" class="expandable-content" style="display: none;">
-                    <div class="step-container">
-                        <div class="step">
-                            <div class="step-number">1</div>
-                            <div class="step-content">
-                                <h4>填寫表單資料</h4>
-                                <p>輸入店家資訊、課程內容和設計偏好。<strong>必填項目：</strong>店家名稱和標題。</p>
-                            </div>
-                        </div>
-                        
-                        <div class="step">
-                            <div class="step-number">2</div>
-                            <div class="step-content">
-                                <h4>選擇設計規格</h4>
-                                <p>選擇適合的尺寸格式（正方形/橫式）和張數（1-20張）。</p>
-                            </div>
-                        </div>
-                        
-                        <div class="step">
-                            <div class="step-number">3</div>
-                            <div class="step-content">
-                                <h4>生成AI指令</h4>
-                                <p>點擊「🚀 生成專業 AI 設計指令」，系統會根據您的資料產生專業指令。</p>
-                            </div>
-                        </div>
-                        
-                        <div class="step">
-                            <div class="step-number">4</div>
-                            <div class="step-content">
-                                <h4>複製指令到Gemini</h4>
-                                <p>1️⃣ 點擊「📋 一次複製全部指令」<br>
-                                2️⃣ 點擊「🚀 前往 Gemini AI」開啟新分頁<br>
-                                3️⃣ 在Gemini對話框貼上指令並等待生成</p>
-                            </div>
-                        </div>
-                        
-                        <div class="step">
-                            <div class="step-number">5</div>
-                            <div class="step-content">
-                                <h4>下載使用圖片</h4>
-                                <p>選擇滿意的圖片下載，用於製作SPA宣傳素材、社群媒體發布等。</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- 使用小技巧 -->
-            <div class="expandable-section">
-                <button class="expand-btn" onclick="toggleSection('tips-guide')">
-                    💡 使用小技巧 <span id="tips-arrow">▼</span>
-                </button>
-                <div id="tips-guide" class="expandable-content" style="display: none;">
-                    <div class="tips-grid">
-                        <div class="tip-card">
-                            <h4>🎯 尺寸選擇技巧</h4>
-                            <ul>
-                                <li><strong>Instagram貼文：</strong>選擇 1080x1080 正方形</li>
-                                <li><strong>Facebook封面：</strong>選擇 1200x628 橫式</li>
-                                <li><strong>網站Banner：</strong>選擇 800x419 橫式</li>
-                                <li><strong>通用社群：</strong>選擇 800x800 正方形</li>
-                            </ul>
-                        </div>
-                        
-                        <div class="tip-card">
-                            <h4>🎨 風格描述技巧</h4>
-                            <ul>
-                                <li><strong>具體描述：</strong>「溫馨親和」比「好看」更有效</li>
-                                <li><strong>色調指定：</strong>「粉色系」、「大地色調」等具體色彩</li>
-                                <li><strong>情境描述：</strong>「專業醫美」、「奢華享受」等</li>
-                                <li><strong>組合使用：</strong>風格+色調效果更佳</li>
-                            </ul>
-                        </div>
-                        
-                        <div class="tip-card">
-                            <h4>🔄 優化生成技巧</h4>
-                            <ul>
-                                <li><strong>批量生成：</strong>一次貼上所有指令到Gemini</li>
-                                <li><strong>重複生成：</strong>不滿意可單獨重新生成某張</li>
-                                <li><strong>多版本對比：</strong>可生成多組選擇最佳</li>
-                                <li><strong>細節調整：</strong>在指令中加入特殊要求</li>
-                            </ul>
-                        </div>
-                        
-                        <div class="tip-card">
-                            <h4>📱 使用場景建議</h4>
-                            <ul>
-                                <li><strong>社群媒體：</strong>正方形格式，色彩鮮明</li>
-                                <li><strong>網站Banner：</strong>橫式格式，留白充足</li>
-                                <li><strong>印刷宣傳：</strong>高解析度，專業質感</li>
-                                <li><strong>LINE貼文：</strong>簡潔明瞭，重點突出</li>
-                            </ul>
-                        </div>
-                    </div>
+                    <h4>📝 基本使用流程</h4>
+                    <p>1. 填寫店家基本資訊和課程內容</p>
+                    <p>2. 選擇設計類型（Banner、流程圖、混合或自訂）</p>
+                    <p>3. 設定設計風格和色調偏好</p>
+                    <p>4. 選擇適合的尺寸和張數</p>
+                    <p>5. 點擊生成指令，複製到Gemini AI使用</p>
+                    
+                    <h4>🎯 獲得最佳效果的技巧</h4>
+                    <p>• <strong>具體描述風格</strong>：使用「溫馨親和」比「好看」更有效</p>
+                    <p>• <strong>明確色調需求</strong>：指定具體色彩如「珍珠白配柔和藍」</p>
+                    <p>• <strong>考慮使用場景</strong>：不同平台建議使用不同尺寸</p>
                 </div>
             </div>
         </div>
@@ -629,95 +488,243 @@
         <!-- 頁面底部Gemini快速按鈕 -->
         <div class="gemini-quick-access">
             <button class="gemini-main-btn" onclick="openGemini()">
-                <span class="gemini-icon">🤖</span>
-                <div class="gemini-text">
-                    <div class="gemini-title">前往 Gemini AI</div>
-                    <div class="gemini-subtitle">開始生成您的專業SPA圖片</div>
+                <span style="font-size: 28px;">🤖</span>
+                <div style="flex: 1; text-align: left; margin-left: 20px;">
+                    <div style="font-size: 18px; font-weight: bold;">前往 Gemini AI</div>
+                    <div style="font-size: 14px; opacity: 0.9;">開始生成您的專業SPA圖片</div>
                 </div>
-                <span class="gemini-arrow">→</span>
+                <span style="font-size: 24px; margin-left: 20px;">→</span>
             </button>
         </div>
     </div>
 
     <script>
         let allPromptsText = "";
-
+        let selectedDesignType = "mixed";
+        
+        // 自動填入範例資料
         function autoFillDemo() {
-            document.getElementById('shopName').value = '凱沃微E美 SPA';
-            document.getElementById('courseDuration').value = '90分鐘';
-            document.getElementById('courseTitle').value = '逆時針光采雙享SPA・逆齡立體導入×喚亮淨透';
-            document.getElementById('originalPrice').value = '10,000元';
-            document.getElementById('discountPrice').value = '599元';
-            document.getElementById('courseContent').value = '【A課程：立體輪廓保濕亮顏】\n✓ 雙層深層溫和卸妝清潔\n✓ 水潤超聲波導入保養\n✓ 韓系LED煥亮保養儀\n\n【B課程：煥采勻膚淨透調理】\n✓ 聲波微霧淨膚調理\n✓ 親膚手技粉刺處理';
+            document.getElementById('courseTitle').value = '逆時重光採雙享SPA・逆齡立體導入×嫩亮淨透';
+            document.getElementById('courseContent').value = '【A課程：立體輪廓保濕亮顏】\n✓ 雙層深層溫和吸附清潔\n✓ 水潤超音波導入保養\n✓ 韓系LED煥亮保養儀\n\n【B課程：煥采緊膚淨透調理】\n✓ 音波微霧淨膚調理\n✓ 親膚手技粉刺處理';
             document.getElementById('designStyle').value = '日式簡約專業風格';
             document.getElementById('colorTheme').value = '珍珠灰配柔和藍色';
-            document.getElementById('designSize').value = '1080x1080';
-            document.getElementById('designCount').value = '8';
             
             showNotification('✅ 範例資料已成功填入！', 'success');
         }
 
+        // 清空表單
         function clearForm() {
-            if (confirm('確定要清空所有表單資料嗎？')) {
-                document.getElementById('spaForm').reset();
-                document.getElementById('outputSection').style.display = 'none';
+            try {
+                console.log('清空表單功能被調用');
+                
+                // 直接清空，不需要確認對話框
+                const courseTitle = document.getElementById('courseTitle');
+                const courseContent = document.getElementById('courseContent');
+                const designStyle = document.getElementById('designStyle');
+                const colorTheme = document.getElementById('colorTheme');
+                const designSize = document.getElementById('designSize');
+                const designCountDisplay = document.getElementById('designCountDisplay');
+                const designCount = document.getElementById('designCount');
+                const outputSection = document.getElementById('outputSection');
+                
+                // 檢查元素是否存在並清空
+                if (courseTitle) courseTitle.value = '';
+                if (courseContent) courseContent.value = '';
+                if (designStyle) designStyle.value = '';
+                if (colorTheme) colorTheme.value = '';
+                if (designSize) designSize.selectedIndex = 0;
+                if (designCountDisplay) designCountDisplay.textContent = '8';
+                if (designCount) designCount.value = '8';
+                if (outputSection) outputSection.style.display = 'none';
+                
+                // 重置設計類型選擇
+                document.querySelectorAll('.design-type-card').forEach(card => {
+                    card.classList.remove('selected');
+                });
+                const mixedCard = document.querySelector('[data-type="mixed"]');
+                if (mixedCard) {
+                    mixedCard.classList.add('selected');
+                }
+                selectedDesignType = "mixed";
+                
                 showNotification('🗑️ 表單已清空', 'success');
+                console.log('表單清空完成');
+            } catch (error) {
+                console.error('清空表單時出錯：', error);
+                showNotification('❌ 清空表單失敗', 'error');
             }
         }
 
+        // 選擇設計類型
+        function selectDesignType(type) {
+            selectedDesignType = type;
+            document.querySelectorAll('.design-type-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+            document.querySelector(`[data-type="${type}"]`).classList.add('selected');
+        }
+
+        // 改變設計張數
+        function changeCount(delta) {
+            const currentCount = parseInt(document.getElementById('designCount').value);
+            const newCount = Math.max(1, Math.min(50, currentCount + delta));
+            document.getElementById('designCount').value = newCount;
+            document.getElementById('designCountDisplay').textContent = newCount;
+        }
+
+        // 獲取尺寸資訊
+        function getSizeInfo(sizeValue) {
+            const sizeMap = {
+                '800x800': '正方形比例1:1，適合社群媒體',
+                '1080x1080': '正方形比例1:1',
+                '800x419': '橫式比例約1.9:1，適合網頁Banner',
+                '1200x628': '橫式比例約1.9:1',
+                '1080x1920': '限時動態比例9:16'
+            };
+            return sizeMap[sizeValue] || '自定義尺寸';
+        }
+
+        // 專業指令範本系統（基於優化版Gemini公式）
+        function getPromptTemplates() {
+            const bannerTemplates = [
+                {
+                    scene: "優雅亞洲女性在高級SPA環境中享受專業面部護理",
+                    details: "客人側臉特寫，閉眼安詳表情，肌膚呈現健康透亮光澤。美容師專注操作，展現熟練手法。",
+                    composition: "3/4側面構圖，淺景深效果，背景柔和虛化，突出主體人物寧靜美感。",
+                    atmosphere: "溫暖專業SPA氛圍，乾淨簡潔空間設計，柔和自然光線，預留右側空間供文字使用。"
+                },
+                {
+                    scene: "專業美容師為客人進行精緻面部護理療程",
+                    details: "美容師專注側面姿態，展現熟練手法。客人放鬆表情，享受護理寧靜狀態。專業產品工具排列整齊。",
+                    composition: "俯瞰45度角，對稱式構圖，營造專業而溫馨治療氛圍。",
+                    atmosphere: "現代SPA診療室，明亮柔和LED照明，純淨白色基調，左側預留文字空間。"
+                },
+                {
+                    scene: "客人在鋪有潔白毛巾的按摩床上享受深層頸部肩部指壓按摩",
+                    details: "客人舒適趴著，只露出後腦杓、頸部與上背，皮膚塗滿按摩油呈現透亮光澤。按摩師使用雙手指關節，對稱深度按壓客人後頸兩側肌肉。",
+                    composition: "極近距離特寫鏡頭，從客人正後方略微俯瞰拍攝，焦點在按摩師雙手指關節施力點，以及頸部肌肉被深度按壓的互動細節。",
+                    atmosphere: "明亮乾淨集中柔和光線，純淨白色毛巾背景，排除其他視覺干擾。極度專業、專注、充滿力道與療癒感氛圍。大面積白色配健康膚色。"
+                },
+                {
+                    scene: "SPA環境中的放鬆護理場景，展現設計感背景",
+                    details: "優雅客人享受護理，專業環境佈置，高級設備器材，精緻產品陳列。",
+                    composition: "廣角視角展現整體空間，平衡構圖，視覺層次豐富。",
+                    atmosphere: "高端SPA品牌質感，現代簡約設計風格，充足留白空間，適合放置文字內容。"
+                }
+            ];
+
+            const processTemplates = [
+                {
+                    scene: "SPA療程流程專業展示，從諮詢到護理完成的完整過程",
+                    details: "多個療程步驟組合畫面，每個步驟清晰視覺重點，專業器材和手法特寫，展現完整SPA服務流程。",
+                    composition: "分割式構圖設計，流暢視覺引導線，創造步驟清晰閱讀流程，設計感強烈版面配置。",
+                    atmosphere: "統一設計風格，現代簡約視覺語言，充足留白空間供流程文字使用，高級SPA品牌質感。"
+                },
+                {
+                    scene: "美容設備操作流程專業攝影記錄",
+                    details: "超音波設備、LED光療儀、專業護膚產品使用過程特寫，美容師專業操作手法細節展示。",
+                    composition: "網格式排版，每個步驟獨立而連貫，形成完整視覺故事，強烈設計感和專業度。",
+                    atmosphere: "醫美級專業感，乾淨明亮拍攝環境，預留充足空間供步驟說明文字，高端專業品牌形象。"
+                },
+                {
+                    scene: "SPA服務完整體驗流程展示",
+                    details: "從接待諮詢、環境介紹、護理準備、療程進行到完成的全過程記錄。",
+                    composition: "時間軸式排列，每個階段重點突出，整體流程清晰易懂。",
+                    atmosphere: "專業服務品質展現，溫馨舒適環境，充分展示服務細節，預留說明文字空間。"
+                }
+            ];
+
+            return { bannerTemplates, processTemplates };
+        }
+
+        // 生成專業指令
         function generatePrompts() {
-            const shopName = document.getElementById('shopName').value;
+            const generateBtn = document.getElementById('generateBtn');
+            const originalText = generateBtn.textContent;
+            
+            // 顯示載入狀態
+            generateBtn.textContent = '🔄 正在生成指令...';
+            generateBtn.disabled = true;
+            
             const courseTitle = document.getElementById('courseTitle').value;
             const designStyle = document.getElementById('designStyle').value || '日式簡約專業風格';
             const colorTheme = document.getElementById('colorTheme').value || '珍珠灰配柔和藍色';
             const designSize = document.getElementById('designSize').value;
             const designCount = parseInt(document.getElementById('designCount').value) || 8;
 
-            if (!shopName || !courseTitle) {
-                showNotification('❌ 請填寫必填欄位：店家名稱和標題', 'error');
+            if (!courseTitle) {
+                showNotification('❌ 請填寫必填欄位：標題', 'error');
+                generateBtn.textContent = originalText;
+                generateBtn.disabled = false;
                 return;
             }
 
-            const sizeInfo = getSizeInfo(designSize);
-            const actualCount = Math.min(Math.max(designCount, 1), 20);
+            setTimeout(() => {
+                const sizeInfo = getSizeInfo(designSize);
+                const { bannerTemplates, processTemplates } = getPromptTemplates();
+                const prompts = [];
 
-            const basePrompts = [
-                '主Banner背景：優雅亞洲女性接受面部護理，側臉特寫，閉眼安詳，' + colorTheme + '，' + designStyle + '，戲劇性柔和打光，左側留白供文字使用',
-                '流程圖展示：真實SPA護理流程，專業美容師操作場景，自然光線，手機攝影風格，生活化記錄感',
-                '超聲波設備：美容師使用超聲波設備，真實操作畫面，專業手法展示，自然室內燈光',
-                'LED光療：客戶接受LED光療，藍光紅光效果，放鬆治療氛圍，手機攝影風格',
-                '專業手技：美容師面部按摩，熟練手法展示，客戶放鬆狀態，生活化攝影風格',
-                '客戶體驗：護理後滿意客戶，自然真實笑容，美容院環境背景，手機拍照質感',
-                'SPA環境：真實美容院室內，' + designStyle + '設計風格，專業設備陳列，自然室內光線',
-                '面膜護理：美容師敷面膜操作，真實護理場景，客戶放鬆狀態，生活化記錄風格'
-            ];
+                // 根據新的Gemini公式格式生成指令
+                const scenePrompts = [];
+                
+                // 添加任務開頭
+                const taskHeader = `你現在的任務是【生成${designCount}張圖片】，必須完整產出，不得停頓、不得省略、不得以文字或連結代替。\n\n`;
+                
+                for (let i = 0; i < designCount; i++) {
+                    let template;
+                    let promptType;
+                    
+                    if (selectedDesignType === 'banner') {
+                        template = bannerTemplates[i % bannerTemplates.length];
+                        promptType = 'Banner設計';
+                    } else if (selectedDesignType === 'process') {
+                        template = processTemplates[i % processTemplates.length];
+                        promptType = '流程圖設計';
+                    } else if (selectedDesignType === 'mixed') {
+                        if (i < Math.floor(designCount / 2)) {
+                            template = bannerTemplates[i % bannerTemplates.length];
+                            promptType = 'Banner設計';
+                        } else {
+                            template = processTemplates[i % processTemplates.length];
+                            promptType = '流程圖設計';
+                        }
+                    } else {
+                        template = bannerTemplates[i % bannerTemplates.length];
+                        promptType = '客製化設計';
+                    }
 
-            const prompts = [];
-            for (let i = 0; i < actualCount; i++) {
-                const baseIndex = i % basePrompts.length;
-                const promptNumber = i + 1;
-                const prompt = `【${promptNumber}】${basePrompts[baseIndex]}。\n尺寸要求：${sizeInfo}，色調：${colorTheme}為主。`;
-                prompts.push(prompt);
-            }
-
-            allPromptsText = prompts.join('\n\n---\n\n');
-            document.getElementById('allPromptsPreview').textContent = allPromptsText;
-            document.getElementById('outputSection').style.display = 'block';
-            document.getElementById('outputSection').scrollIntoView({ behavior: 'smooth' });
-            
-            showNotification(`✅ 成功生成 ${actualCount} 組 AI 設計指令！`, 'success');
+                    const sceneNumber = i + 1;
+                    const scenePrompt = `【場景${sceneNumber}】
+核心場景：${template.scene}
+主體細節：${template.details}
+構圖與視角：${template.composition}
+環境與氛圍：${template.atmosphere}
+色調風格：${colorTheme}為主調，${designStyle}風格
+尺寸要求：${sizeInfo}
+拍攝品質：專業攝影級別，高解析度，自然光感
+重要提醒：預留充足文字放置空間，避免在預留區域放置視覺元素`;
+                    
+                    scenePrompts.push(scenePrompt);
+                }
+                
+                // 添加任務結尾
+                const taskFooter = `\n\n請一次輸出以上全部圖片，不要停頓，不要省略。`;
+                
+                // 組合完整指令
+                allPromptsText = taskHeader + scenePrompts.join('\n\n') + taskFooter;
+                document.getElementById('allPromptsPreview').textContent = allPromptsText;
+                document.getElementById('outputSection').style.display = 'block';
+                document.getElementById('outputSection').scrollIntoView({ behavior: 'smooth' });
+                
+                // 恢復按鈕狀態
+                generateBtn.textContent = originalText;
+                generateBtn.disabled = false;
+                
+                showNotification(`✅ 成功生成 ${designCount} 組 AI 設計指令！`, 'success');
+            }, 1000);
         }
 
-        function getSizeInfo(sizeValue) {
-            const sizeMap = {
-                '800x800': '正方形比例1:1，適合社群媒體',
-                '1080x1080': 'Instagram正方形比例1:1',
-                '800x419': '橫式比例約1.9:1，適合網頁Banner',
-                '1200x628': 'Facebook橫式比例約1.9:1'
-            };
-            return sizeMap[sizeValue] || '自定義尺寸';
-        }
-
+        // 複製所有指令
         function copyAllPrompts() {
             if (!allPromptsText) {
                 showNotification('❌ 請先生成指令！', 'error');
@@ -731,11 +738,13 @@
             });
         }
 
+        // 開啟Gemini
         function openGemini() {
             window.open('https://gemini.google.com', '_blank');
-            showNotification('🚀 已開啟 Gemini AI，請貼上指令開始生成圖片！', 'success');
+            showNotification('🚀 已開啟 Gemini AI！請貼上指令開始生成圖片！', 'success');
         }
 
+        // 顯示通知
         function showNotification(message, type) {
             const notification = document.createElement('div');
             notification.className = `notification ${type}`;
@@ -748,33 +757,68 @@
             }, 3000);
         }
 
+        // 切換展開區域
         function toggleSection(sectionId) {
             const content = document.getElementById(sectionId);
+            const arrow = document.getElementById(sectionId.replace('-guide', '-arrow'));
             const isVisible = content.style.display !== 'none';
             
             if (isVisible) {
                 content.style.display = 'none';
-                updateArrow(sectionId, false);
+                arrow.textContent = '▼';
             } else {
                 content.style.display = 'block';
-                updateArrow(sectionId, true);
+                arrow.textContent = '▲';
                 content.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
             }
         }
 
-        function updateArrow(sectionId, isOpen) {
-            let arrowId;
-            if (sectionId === 'usage-guide') {
-                arrowId = 'usage-arrow';
-            } else if (sectionId === 'tips-guide') {
-                arrowId = 'tips-arrow';
+        // 頁面載入完成後執行
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('SPA設計生成器已載入完成');
+            
+            // 檢查重要元素是否存在
+            const importantElements = [
+                'courseTitle',
+                'courseContent',
+                'designStyle', 
+                'colorTheme',
+                'designSize',
+                'designCount',
+                'designCountDisplay'
+            ];
+            
+            importantElements.forEach(id => {
+                const element = document.getElementById(id);
+                if (element) {
+                    console.log(`✅ 元素 ${id} 找到`);
+                } else {
+                    console.error(`❌ 元素 ${id} 未找到`);
+                }
+            });
+            
+            // 確保按鈕事件正常綁定
+            const clearBtn = document.querySelector('.clear-btn');
+            if (clearBtn) {
+                console.log('✅ 清空按鈕找到');
+                // 移除可能的重複事件監聽器
+                clearBtn.removeEventListener('click', clearForm);
+                // 重新綁定事件
+                clearBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    console.log('清空按鈕被點擊');
+                    clearForm();
+                });
+            } else {
+                console.error('❌ 清空按鈕未找到');
             }
             
-            if (arrowId) {
-                const arrow = document.getElementById(arrowId);
-                arrow.textContent = isOpen ? '▲' : '▼';
-            }
-        }
+            // 測試所有按鈕功能
+            const buttons = document.querySelectorAll('button');
+            buttons.forEach((button, index) => {
+                console.log(`按鈕 ${index + 1}: ${button.textContent.trim()}`);
+            });
+        });
     </script>
 </body>
 </html>
