@@ -46,19 +46,20 @@
     .main-layout {
       flex: 1;
       display: flex;
-      flex-direction: column;
       background: #f8f6f2;
     }
     .form-section {
+      flex: 1;
       overflow-y: auto;
       padding: 25px;
-      flex: 1;
     }
     .output-section {
+      width: 450px;
       background: #f8f6f2;
-      border-top: 1px solid #e0e0e0;
+      border-left: 1px solid #e0e0e0;
       padding: 25px;
-      flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
     }
     .output-header {
       display: flex;
@@ -76,8 +77,7 @@
       font-family: 'Courier New', monospace;
       font-size: 12px;
       white-space: pre-wrap;
-      min-height: 200px;
-      max-height: 400px;
+      flex: 1;
       overflow-y: auto;
     }
     .empty-state {
@@ -290,6 +290,7 @@
       border: none;
       cursor: pointer;
       transition: all 0.2s;
+      white-space: nowrap;
     }
     .history-btn-load {
       background: #a8b5a0;
@@ -351,6 +352,12 @@
     .modal-title {
       font-size: 1.3rem;
       font-weight: 600;
+      flex: 1;
+    }
+    .modal-header-actions {
+      display: flex;
+      gap: 10px;
+      align-items: center;
     }
     .modal-close {
       font-size: 24px;
@@ -368,11 +375,26 @@
     .modal-close:hover {
       color: #333;
     }
+    .btn-clear-all {
+      padding: 6px 14px;
+      font-size: 12px;
+      background: #d4a882;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-clear-all:hover {
+      opacity: 0.8;
+    }
     
     @media (max-width: 768px) {
       .form-grid, .angle-grid { grid-template-columns: 1fr; }
       .header { flex-direction: column; gap: 12px; }
       .history-item-header { flex-direction: column; align-items: flex-start; gap: 8px; }
+      .main-layout { flex-direction: column; }
+      .output-section { width: 100%; border-left: none; border-top: 1px solid #e0e0e0; }
     }
   </style>
 </head>
@@ -549,7 +571,7 @@
               <label for="model11">無人場景,純環境展示,空間美學</label>
             </div>
             <div class="model-item" onclick="toggleModel(12, event)">
-              <input type="checkbox" id="model12" onclick="event.stopPropagation()">
+              <input type="checkbox" id="model12" onclick="event.stopPropagation();">
               <label for="model12">其他</label>
             </div>
           </div>
@@ -578,28 +600,36 @@
             <label>拍攝角度選擇(可多選)</label>
             <div class="angle-grid">
               <div class="angle-option" onclick="toggleAngle(1, event)">
-                <input type="checkbox" id="angle1" value="0° 正面平視" checked onclick="event.stopPropagation()">
-                <label for="angle1">0° 正面平視</label>
+                <input type="checkbox" id="angle1" value="正面平視，眼神接觸，展現臉部表情" checked onclick="event.stopPropagation()">
+                <label for="angle1">正面平視</label>
               </div>
               <div class="angle-option" onclick="toggleAngle(2, event)">
-                <input type="checkbox" id="angle2" value="30-45° 斜側角度" checked onclick="event.stopPropagation()">
+                <input type="checkbox" id="angle2" value="30-45度側面角度，展現側臉輪廓與身體曲線" checked onclick="event.stopPropagation()">
                 <label for="angle2">30-45° 斜側角度</label>
               </div>
               <div class="angle-option" onclick="toggleAngle(3, event)">
-                <input type="checkbox" id="angle3" value="俯視角度" checked onclick="event.stopPropagation()">
+                <input type="checkbox" id="angle3" value="由上往下俯視45度角，展現全身療程動作" checked onclick="event.stopPropagation()">
                 <label for="angle3">俯視角度</label>
               </div>
               <div class="angle-option" onclick="toggleAngle(4, event)">
-                <input type="checkbox" id="angle4" value="特寫頭部" onclick="event.stopPropagation()">
+                <input type="checkbox" id="angle4" value="臉部、肩頸特寫，展現放鬆表情與細節" onclick="event.stopPropagation()">
                 <label for="angle4">特寫頭部</label>
               </div>
               <div class="angle-option" onclick="toggleAngle(5, event)">
-                <input type="checkbox" id="angle5" value="側面垂直" onclick="event.stopPropagation()">
+                <input type="checkbox" id="angle5" value="90度側面垂直拍攝，展現完整身形側影" onclick="event.stopPropagation()">
                 <label for="angle5">側面垂直</label>
               </div>
               <div class="angle-option" onclick="toggleAngle(6, event)">
-                <input type="checkbox" id="angle6" value="全景廣角" onclick="event.stopPropagation()">
-                <label for="angle6">全景廣角</label>
+                <input type="checkbox" id="angle6" value="後方斜45度角，展現背部與療程手法" onclick="event.stopPropagation()">
+                <label for="angle6">後方斜角</label>
+              </div>
+              <div class="angle-option" onclick="toggleAngle(7, event)">
+                <input type="checkbox" id="angle7" value="低角度由下往上拍攝，展現人物氣勢與空間感" onclick="event.stopPropagation()">
+                <label for="angle7">低角度仰拍</label>
+              </div>
+              <div class="angle-option" onclick="toggleAngle(8, event)">
+                <input type="checkbox" id="angle8" value="遠景全身，包含完整環境與人物關係" onclick="event.stopPropagation()">
+                <label for="angle8">遠景全身</label>
               </div>
             </div>
           </div>
@@ -667,7 +697,10 @@
     <div class="modal-content">
       <div class="modal-header">
         <div class="modal-title">歷程紀錄</div>
-        <button class="modal-close" onclick="closeHistory()">×</button>
+        <div class="modal-header-actions">
+          <button class="btn-clear-all" onclick="clearAllHistory()">清空全部紀錄</button>
+          <button class="modal-close" onclick="closeHistory()">×</button>
+        </div>
       </div>
       <div id="historyList" class="history-list">
         <div class="empty-state" style="padding: 40px 20px;">
@@ -700,6 +733,19 @@
       localStorage.setItem('spaGeneratorHistory', JSON.stringify(historyRecords));
     }
 
+    // 清空全部紀錄
+    function clearAllHistory() {
+      if (confirm('確定要清空全部歷程紀錄嗎？此操作無法復原。')) {
+        historyRecords = [];
+        saveHistory();
+        showToast('已清空全部紀錄', 'info');
+        const modal = document.getElementById('historyModal');
+        if (modal.classList.contains('show')) {
+          showHistory();
+        }
+      }
+    }
+
     // 顯示歷程紀錄
     function showHistory() {
       loadHistory();
@@ -709,7 +755,7 @@
       if (historyRecords.length === 0) {
         listDiv.innerHTML = '<div class="empty-state" style="padding: 40px 20px;"><div style="font-size: 24px; margin-bottom: 12px;">📋</div><div>尚無歷程紀錄</div></div>';
       } else {
-        let html = '';
+        listDiv.innerHTML = '';
         historyRecords.forEach((record, index) => {
           const date = new Date(record.timestamp);
           const timeStr = date.toLocaleString('zh-TW', { 
@@ -719,22 +765,78 @@
             minute: '2-digit' 
           });
           
-          html += '<div class="history-item" style="cursor: default;">';
-          html += '<div class="history-item-header">';
-          html += '<div class="history-title">' + (record.title || '未命名') + '</div>';
-          html += '<div class="history-actions">';
-          html += '<button class="history-btn history-btn-load" onclick="loadRecordById(' + index + '); event.stopPropagation();">載入</button>';
-          html += '<button class="history-btn history-btn-delete" onclick="deleteRecordById(' + index + '); event.stopPropagation();">刪除</button>';
-          html += '</div>';
-          html += '</div>';
-          html += '<div class="history-time">' + timeStr + '</div>';
+          const itemDiv = document.createElement('div');
+          itemDiv.className = 'history-item';
+          
+          const headerDiv = document.createElement('div');
+          headerDiv.className = 'history-item-header';
+          
+          const titleDiv = document.createElement('div');
+          titleDiv.className = 'history-title';
+          titleDiv.textContent = record.title || '未命名';
+          
+          const actionsDiv = document.createElement('div');
+          actionsDiv.className = 'history-actions';
+          
+          const loadBtn = document.createElement('button');
+          loadBtn.className = 'history-btn history-btn-load';
+          loadBtn.textContent = '載入';
+          loadBtn.onclick = function(e) {
+            e.stopPropagation();
+            loadRecord(index);
+          };
+          
+          const viewBtn = document.createElement('button');
+          viewBtn.className = 'history-btn history-btn-load';
+          viewBtn.textContent = '查看指令';
+          viewBtn.style.background = '#8b9d83';
+          viewBtn.onclick = function(e) {
+            e.stopPropagation();
+            if (record.generatedPrompt) {
+              document.getElementById('output').textContent = record.generatedPrompt;
+              closeHistory();
+              showToast('已顯示歷史指令', 'success');
+            } else {
+              showToast('此紀錄無儲存指令', 'error');
+            }
+          };
+          
+          const deleteBtn = document.createElement('button');
+          deleteBtn.className = 'history-btn history-btn-delete';
+          deleteBtn.textContent = '刪除';
+          deleteBtn.onclick = function(e) {
+            e.stopPropagation();
+            if (confirm('確定要刪除這筆紀錄嗎？')) {
+              historyRecords.splice(index, 1);
+              saveHistory();
+              showHistory();
+              showToast('已刪除紀錄', 'info');
+            }
+          };
+          
+          actionsDiv.appendChild(loadBtn);
+          actionsDiv.appendChild(viewBtn);
+          actionsDiv.appendChild(deleteBtn);
+          
+          headerDiv.appendChild(titleDiv);
+          headerDiv.appendChild(actionsDiv);
+          
+          const timeDiv = document.createElement('div');
+          timeDiv.className = 'history-time';
+          timeDiv.textContent = timeStr;
+          
+          itemDiv.appendChild(headerDiv);
+          itemDiv.appendChild(timeDiv);
+          
           if (record.content) {
-            const preview = record.content.substring(0, 100);
-            html += '<div class="history-preview">' + preview + '...</div>';
+            const previewDiv = document.createElement('div');
+            previewDiv.className = 'history-preview';
+            previewDiv.textContent = record.content.substring(0, 100) + '...';
+            itemDiv.appendChild(previewDiv);
           }
-          html += '</div>';
+          
+          listDiv.appendChild(itemDiv);
         });
-        listDiv.innerHTML = html;
       }
       
       modal.classList.add('show');
@@ -833,7 +935,7 @@
       }
       
       // 載入角度選擇
-      for (let i = 1; i <= 6; i++) {
+      for (let i = 1; i <= 8; i++) {
         const cb = document.getElementById('angle' + i);
         if (cb && record.angles) {
           cb.checked = record.angles.includes(i);
@@ -870,7 +972,7 @@
       }
       
       const selectedAngles = [];
-      for (let i = 1; i <= 6; i++) {
+      for (let i = 1; i <= 8; i++) {
         const cb = document.getElementById('angle' + i);
         if (cb && cb.checked) {
           selectedAngles.push(i);
@@ -899,7 +1001,8 @@
         composition: document.getElementById('composition').value,
         detailReq: document.getElementById('detailReq').value.trim(),
         imageCount: document.getElementById('imageCount').value,
-        dimension: document.getElementById('dimension').value
+        dimension: document.getElementById('dimension').value,
+        generatedPrompt: document.getElementById('output').textContent
       };
       
       historyRecords.unshift(record);
@@ -941,14 +1044,17 @@
       }
       const cb = document.getElementById('model' + num);
       if (!cb) return;
+      
+      // 直接讀取 checkbox 的當前狀態，不要切換它
+      const isChecked = cb.checked;
       const item = cb.parentElement;
-      cb.checked = !cb.checked;
-      item.classList.toggle('selected', cb.checked);
+      
+      item.classList.toggle('selected', isChecked);
       
       if (num === 12) {
         const customInput = document.getElementById('customModelInput');
         if (customInput) {
-          customInput.style.display = cb.checked ? 'block' : 'none';
+          customInput.style.display = isChecked ? 'block' : 'none';
         }
       }
       
@@ -1002,11 +1108,11 @@
       const detail = document.getElementById('detailReq').value.trim();
 
       const angles = [];
-      for (let i = 1; i <= 6; i++) {
+      for (let i = 1; i <= 8; i++) {
         const cb = document.getElementById('angle' + i);
         if (cb && cb.checked) angles.push(cb.value);
       }
-      if (angles.length === 0) angles.push('30-45° 斜側角度', '正面平視');
+      if (angles.length === 0) angles.push('30-45度側面角度，展現側臉輪廓與身體曲線', '正面平視，眼神接觸，展現臉部表情');
 
       const model = selectedModels.length > 0 ? selectedModels[0] : '優雅亞洲女性25-35歲';
 
@@ -1056,20 +1162,23 @@
       prompt += '## 📸 請依序生成以下圖片\n\n';
 
       // 第一張：純背景
-      prompt += '### 【圖片 1/' + count + '】純環境背景\n\n';
+      prompt += '### 【圖片 1/' + count + '】流程背景圖\n\n';
       prompt += '**場景描述：**\n';
-      prompt += '這是一張沒有任何人物的純環境照片，展現' + scene + '的空間美學。\n\n';
-      prompt += '**拍攝距離：中景，不要太遠太廣角，要能看清楚環境細節與材質\n\n';
+      prompt += '這是一張純粹的設計背景圖，不是環境空間照片，而是可以作為療程流程說明的背景底圖。\n\n';
+      prompt += '**拍攝距離：不適用（這是設計圖而非攝影作品）\n\n';
       prompt += '**具體要求：**\n';
-      prompt += '- 場景：' + scene + '的室內環境\n';
-      prompt += '- 風格：' + style + ' ' + tone + '\n';
-      prompt += '- 色調：以' + color + '為主\n';
-      prompt += '- 光線：' + light + '營造氛圍\n';
-      prompt += '- 材質：突顯' + mat + '的質感\n';
-      prompt += '- 拍攝視角：不要用廣角鏡頭，要拍得清楚細節\n';
-      prompt += '- 距離感：中近景，能清楚看到空間的質感與細節\n';
-      prompt += '- 重點：完全沒有人物，純粹的空間攝影\n';
-      prompt += '- 構圖：展現空間的深度與層次感\n\n';
+      prompt += '- 類型：平面設計背景，不是實景照片\n';
+      prompt += '- 風格：' + style + ' ' + tone + '的設計感\n';
+      prompt += '- 色調：以' + color + '為主色調\n';
+      prompt += '- 元素：可以有抽象的' + mat + '材質紋理或圖案\n';
+      prompt += '- 光影：' + light + '的氛圍感\n';
+      prompt += '- 設計重點：\n';
+      prompt += '  * 完全沒有人物、家具、實體物品\n';
+      prompt += '  * 乾淨簡潔的設計背景\n';
+      prompt += '  * 可以有漸層、紋理、幾何圖案\n';
+      prompt += '  * 適合在上面放置文字或流程說明\n';
+      prompt += '  * 具有' + scene + '的氛圍但不是實景\n';
+      prompt += '- 禁止：不要拍攝實際的室內環境或空間\n\n';
       prompt += '---\n\n';
 
       // 其他張：有人物的療程圖
@@ -1094,7 +1203,8 @@
         prompt += '- 背景處理：自然柔焦但仍可辨識是' + scene + '\n';
         prompt += '- 人物：' + model + '，表情放鬆愉悅\n';
         prompt += '- 人物距離：中近景，能清楚看到表情和動作\n';
-        prompt += '- 拍攝角度：' + ang + '\n';
+        prompt += '- 拍攝角度說明：' + ang + '\n';
+        prompt += '  ⚠️ 重要：請嚴格按照此角度拍攝，確保每張圖片的視角明顯不同\n';
         prompt += '- 構圖方式：' + comp + '\n';
         prompt += '- 光線效果：' + light + '\n';
         if (needDevice) {
@@ -1236,6 +1346,8 @@
       document.getElementById('angle4').checked = false;
       document.getElementById('angle5').checked = false;
       document.getElementById('angle6').checked = false;
+      document.getElementById('angle7').checked = false;
+      document.getElementById('angle8').checked = false;
       
       deviceImages = [];
       document.getElementById('devicePreview').style.display = 'none';
